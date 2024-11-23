@@ -1,0 +1,42 @@
+services:
+  # FastAPI 服務
+  # web:
+  #   build: .
+  #   volumes:
+  #     - .:/app
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - DATABASE_URL=postgresql://tlgrdcb2bAp:27938888@db:5432/TLGRDCB2BSIT
+  #     - RABBITMQ_URL=amqp://TLGRDCB2BSIT:tlgrdcb2bAp@rabbitmq:5672/
+  #   depends_on:
+  #     - db
+
+  # PostgreSQL 服務
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: TLGRDCB2BSIT
+      POSTGRES_USER: tlgrdcb2bAp
+      POSTGRES_PASSWORD: 27938888
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+   # RabbitMQ 服務
+  rabbitmq:
+    image: rabbitmq:management
+    environment:
+      - RABBITMQ_DEFAULT_USER=TLGRDCB2BSIT
+      - RABBITMQ_DEFAULT_PASS=tlgrdcb2bAp
+    ports:
+      - "15672:15672"
+      - "5672:5672" 
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
